@@ -6,9 +6,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.example.recyclerview.R;
+import com.example.recyclerview.activity.RecyclerItemClickListener;
 import com.example.recyclerview.activity.adapter.Adapter;
 import com.example.recyclerview.activity.model.Filme;
 
@@ -40,17 +44,51 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayout.VERTICAL));
         recyclerView.setAdapter(adapter);
 
+        //evento de click
+        recyclerView.addOnItemTouchListener(
+                new RecyclerItemClickListener(
+                        getApplicationContext(),
+                        recyclerView,
+                        new RecyclerItemClickListener.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
+                                Filme filme = listaFilmes.get(position);
+                                Toast.makeText(
+                                        getApplicationContext(),
+                                        "Item pressionado:" + filme.getTituloFilme(),
+                                        Toast.LENGTH_LONG
+                                ).show();
+                            }
+
+                            @Override
+                            public void onLongItemClick(View view, int position) {
+                                Filme filme = listaFilmes.get(position);
+                                Toast.makeText(
+                                        getApplicationContext(),
+                                        "Click longo:" + filme.getTituloFilme(),
+                                        Toast.LENGTH_LONG
+                                ).show();
+                            }
+
+                            @Override
+                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                            }
+                        }
+                )
+        );
+
     }
 
     public void criarFilmes() {
         //vai gerar os filmes
         Filme filme = new Filme("Homem Aranha - De volta ao lar", "Ação", "2017");
         this.listaFilmes.add(filme);
-        filme = new Filme("Homens de preto", "Ação","2010");
+        filme = new Filme("Homens de preto", "Ação", "2010");
         this.listaFilmes.add(filme);
-        filme = new Filme("A espera de um milagre", "Drama","1999");
+        filme = new Filme("A espera de um milagre", "Drama", "1999");
         this.listaFilmes.add(filme);
-        filme = new Filme("Resgate do soldado Ryan", "Ação","1998");
+        filme = new Filme("Resgate do soldado Ryan", "Ação", "1998");
         this.listaFilmes.add(filme);
 
     }
